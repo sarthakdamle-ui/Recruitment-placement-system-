@@ -1,0 +1,236 @@
+{% extends "base.html" %}{% block title %}Offers
+&
+placements · Placement Desk{% endblock %}{% block content %}
+<div class="page-heading">
+  <div>
+    <p class="eyebrow">
+      HIRING OUTCOME
+    </p>
+    <h1>
+      Offers
+      &
+      placements
+    </h1>
+    <p>
+      Move shortlisted candidates through selection, offer response, and joining.
+    </p>
+  </div>
+</div>
+<div class="layout-two">
+  <section class="panel">
+    <h2>
+      Mark selected
+    </h2>
+    <form method="post" class="inline-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="action" value="select">
+      <select name="application_id" required>
+        {% for a in applications if a[5]=='SHORTLISTED' %}
+        <option value="{{ a[0] }}">
+          #{{ a[0] }} · {{ a[1] }} · {{ a[3] }}
+        </option>
+        {% endfor %}
+      </select>
+      <button class="button primary">
+        Mark selected
+      </button>
+    </form>
+  </section>
+  <section class="panel">
+    <h2>
+      Create offer
+    </h2>
+    <form method="post" class="form-grid">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="action" value="offer">
+      <label>
+        Selected application ID
+        <input type="number" name="application_id" min="1" required>
+      </label>
+      <label>
+        Offer date
+        <input type="date" name="offered_at" required>
+      </label>
+      <label>
+        Expiry date
+        <input type="date" name="expires_at">
+      </label>
+      <label>
+        Salary
+        <input type="number" name="salary" min="0" step="0.01">
+      </label>
+      <button class="button primary span-two">
+        Create offer
+      </button>
+    </form>
+  </section>
+</div>
+<div class="layout-two">
+  <section class="panel">
+    <h2>
+      Record offer response
+    </h2>
+    <form method="post" class="inline-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="action" value="respond">
+      <select name="offer_id" required>
+        {% for o in offers if o[8]=='PENDING' %}
+        <option value="{{ o[0] }}">
+          Offer #{{ o[0] }} · {{ o[2] }} · {{ o[4] }}
+        </option>
+        {% endfor %}
+      </select>
+      <select name="response">
+        <option>
+          ACCEPTED
+        </option>
+        <option>
+          DECLINED
+        </option>
+      </select>
+      <button class="button secondary">
+        Save response
+      </button>
+    </form>
+  </section>
+  <section class="panel">
+    <h2>
+      Record joining
+    </h2>
+    <form method="post" class="form-grid">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="action" value="join">
+      <label>
+        Accepted offer ID
+        <input type="number" name="offer_id" min="1" required>
+      </label>
+      <label>
+        Joining date
+        <input type="date" name="joined_on" required>
+      </label>
+      <label>
+        Designation
+        <input name="designation">
+      </label>
+      <label>
+        Final salary
+        <input type="number" name="salary" min="0" step="0.01">
+      </label>
+      <button class="button primary span-two">
+        Record placement
+      </button>
+    </form>
+  </section>
+</div>
+<section class="panel">
+  <h2>
+    Offers
+  </h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>
+            ID
+          </th>
+          <th>
+            Application
+          </th>
+          <th>
+            Candidate
+          </th>
+          <th>
+            Company
+          </th>
+          <th>
+            Role
+          </th>
+          <th>
+            Offered
+          </th>
+          <th>
+            Expires
+          </th>
+          <th>
+            Salary
+          </th>
+          <th>
+            Status
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for o in offers %}
+        <tr>
+          {% for value in o %}
+          <td>
+            {{ value or '' }}
+          </td>
+          {% endfor %}
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="9" class="empty">
+            No offers recorded.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+<section class="panel">
+  <h2>
+    Placement history
+  </h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>
+            ID
+          </th>
+          <th>
+            Application
+          </th>
+          <th>
+            Candidate
+          </th>
+          <th>
+            Company
+          </th>
+          <th>
+            Role
+          </th>
+          <th>
+            Joined
+          </th>
+          <th>
+            Designation
+          </th>
+          <th>
+            Salary
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in placements %}
+        <tr>
+          {% for value in p %}
+          <td>
+            {{ value or '' }}
+          </td>
+          {% endfor %}
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="8" class="empty">
+            No placements recorded.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

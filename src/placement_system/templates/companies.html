@@ -1,0 +1,95 @@
+{% extends "base.html" %}{% block title %}Companies · Placement Desk{% endblock %}{% block content %}
+<div class="page-heading">
+  <div>
+    <p class="eyebrow">
+      EMPLOYERS
+    </p>
+    <h1>
+      Companies
+    </h1>
+    <p>
+      Keep the employer directory current before posting job openings.
+    </p>
+  </div>
+</div>
+<div class="layout-two">
+  <section class="panel">
+    <h2>
+      Add company
+    </h2>
+    <form method="post" class="form-grid">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <label>
+        Company name
+        <input name="company_name" required>
+      </label>
+      <label>
+        Industry
+        <input name="industry">
+      </label>
+      <label>
+        Website
+        <input name="website" type="url" placeholder="https://example.com">
+      </label>
+      <label>
+        Contact email
+        <input name="contact_email" type="email">
+      </label>
+      <button class="button primary span-two">
+        Add company
+      </button>
+    </form>
+  </section>
+  <section class="panel">
+    <h2>
+      Directory
+    </h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>
+              ID
+            </th>
+            <th>
+              Company
+            </th>
+            <th>
+              Industry
+            </th>
+            <th>
+              Status
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in companies %}
+          <tr>
+            <td>
+              {{ c[0] }}
+            </td>
+            <td>
+              {{ c[1] }}
+            </td>
+            <td>
+              {{ c[2] }}
+            </td>
+            <td>
+              <span class="badge">
+                {{ c[3] }}
+              </span>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="4" class="empty">
+              No companies registered.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+{% endblock %}

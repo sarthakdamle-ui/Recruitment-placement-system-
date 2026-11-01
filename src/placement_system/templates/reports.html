@@ -1,0 +1,212 @@
+{% extends "base.html" %}{% block title %}Reports · Placement Desk{% endblock %}{% block content %}
+<div class="page-heading">
+  <div>
+    <p class="eyebrow">
+      INSIGHTS
+    </p>
+    <h1>
+      Search
+      &
+      reports
+    </h1>
+    <p>
+      Filter records and review placement outcomes.
+    </p>
+  </div>
+</div>
+<section class="panel">
+  <h2>
+    Search candidates
+  </h2>
+  <form method="get" class="filter-row">
+    <input name="candidate_q" placeholder="Name or email" value="{{ filters.get('candidate_q','') }}">
+    <input name="candidate_technology" placeholder="Technology" value="{{ filters.get('candidate_technology','') }}">
+    <select name="candidate_status">
+      <option value="">
+        Any status
+      </option>
+      {% for s in ['ACTIVE','INACTIVE','PLACED'] %}
+      <option value="{{ s }}" {% if filters.get('candidate_status')==s %}selected{% endif %}>
+        {{ s }}
+      </option>
+      {% endfor %}
+    </select>
+    <button class="button secondary">
+      Search
+    </button>
+  </form>
+  {% if candidate_rows %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>
+            ID
+          </th>
+          <th>
+            Name
+          </th>
+          <th>
+            Email
+          </th>
+          <th>
+            Technology
+          </th>
+          <th>
+            Percentage
+          </th>
+          <th>
+            Year
+          </th>
+          <th>
+            Status
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in candidate_rows %}
+        <tr>
+          {% for value in c %}
+          <td>
+            {{ value }}
+          </td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+</section>
+<section class="panel">
+  <h2>
+    Search jobs
+  </h2>
+  <form method="get" class="filter-row">
+    <input name="job_q" placeholder="Title or company" value="{{ filters.get('job_q','') }}">
+    <input name="job_technology" placeholder="Technology" value="{{ filters.get('job_technology','') }}">
+    <select name="job_status">
+      <option value="">
+        Any status
+      </option>
+      {% for s in ['OPEN','CLOSED','ON_HOLD'] %}
+      <option value="{{ s }}" {% if filters.get('job_status')==s %}selected{% endif %}>
+        {{ s }}
+      </option>
+      {% endfor %}
+    </select>
+    <button class="button secondary">
+      Search
+    </button>
+  </form>
+  {% if job_rows %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>
+            ID
+          </th>
+          <th>
+            Title
+          </th>
+          <th>
+            Company
+          </th>
+          <th>
+            Technology
+          </th>
+          <th>
+            Minimum %
+          </th>
+          <th>
+            Status
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for j in job_rows %}
+        <tr>
+          {% for value in j %}
+          <td>
+            {{ value }}
+          </td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+</section>
+<div class="layout-two">
+  <section class="panel">
+    <h2>
+      Application pipeline
+    </h2>
+    {% if status_rows %}
+    <div class="status-grid">
+      {% for status, count in status_rows %}
+      <div class="status-tile">
+        <span>
+          {{ status|title }}
+        </span>
+        <strong>
+          {{ count }}
+        </strong>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="muted">
+      No applications yet.
+    </p>
+    {% endif %}
+  </section>
+  <section class="panel">
+    <h2>
+      Placements by company
+    </h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>
+              Company
+            </th>
+            <th>
+              Placed
+            </th>
+            <th>
+              Avg salary
+            </th>
+            <th>
+              Min
+            </th>
+            <th>
+              Max
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in placement_rows %}
+          <tr>
+            {% for value in p %}
+            <td>
+              {{ value if value is not none else 'N/A' }}
+            </td>
+            {% endfor %}
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="5" class="empty">
+              No placements yet.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+{% endblock %}

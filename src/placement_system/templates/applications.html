@@ -1,0 +1,96 @@
+{% extends "base.html" %}{% block title %}Applications · Placement Desk{% endblock %}{% block content %}
+<div class="page-heading">
+  <div>
+    <p class="eyebrow">
+      PIPELINE
+    </p>
+    <h1>
+      Applications
+    </h1>
+    <p>
+      Review submissions and move candidates to shortlisting.
+    </p>
+  </div>
+</div>
+<section class="panel">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>
+            ID
+          </th>
+          <th>
+            Candidate
+          </th>
+          <th>
+            Email
+          </th>
+          <th>
+            Role
+          </th>
+          <th>
+            Company
+          </th>
+          <th>
+            Status
+          </th>
+          <th>
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in applications %}
+        <tr>
+          <td>
+            {{ a[0] }}
+          </td>
+          <td>
+            {{ a[1] }}
+          </td>
+          <td>
+            {{ a[2] }}
+          </td>
+          <td>
+            {{ a[3] }}
+          </td>
+          <td>
+            {{ a[4] }}
+          </td>
+          <td>
+            <span class="badge">
+              {{ a[5] }}
+            </span>
+          </td>
+          <td>
+            {% if a[5]=='APPLIED' %}
+            <div class="action-row">
+              <form method="post" action="{{ url_for('application_action', application_id=a[0], action='shortlist') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button class="button small primary">
+                  Shortlist
+                </button>
+              </form>
+              <form method="post" action="{{ url_for('application_action', application_id=a[0], action='reject') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button class="button small danger">
+                  Reject
+                </button>
+              </form>
+            </div>
+            {% endif %}
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="7" class="empty">
+            No applications yet.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

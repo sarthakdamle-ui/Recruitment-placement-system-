@@ -1,0 +1,164 @@
+{% extends "base.html" %}{% block title %}Candidates · Placement Desk{% endblock %}{% block content %}
+<div class="page-heading">
+  <div>
+    <p class="eyebrow">
+      PEOPLE
+    </p>
+    <h1>
+      Candidates
+    </h1>
+    <p>
+      Register profiles and find candidates by name, email, technology, or status.
+    </p>
+  </div>
+</div>
+<div class="layout-two">
+  <section class="panel">
+    <h2>
+      Register candidate
+    </h2>
+    <form method="post" class="form-grid">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <label>
+        Full name
+        <input name="full_name" required minlength="2">
+      </label>
+      <label>
+        Email
+        <input name="email" type="email" required>
+      </label>
+      <label>
+        Phone
+        <input name="phone" type="tel">
+      </label>
+      <label>
+        Qualification
+        <input name="qualification" required placeholder="B.Tech">
+      </label>
+      <label>
+        Percentage
+        <input name="percentage" type="number" min="0" max="100" step="0.01" required>
+      </label>
+      <label>
+        Passing year
+        <input name="passing_year" type="number" min="1950" required>
+      </label>
+      <label>
+        Primary technology
+        <input name="technology" required>
+      </label>
+      <label>
+        Active backlogs
+        <input name="active_backlogs" type="number" min="0" value="0" required>
+      </label>
+      <label class="span-two">
+        Skills, comma-separated
+        <input name="skills" placeholder="Python, SQL, Communication">
+      </label>
+      <button class="button primary span-two">
+        Save candidate
+      </button>
+    </form>
+  </section>
+  <section class="panel">
+    <h2>
+      Search candidates
+    </h2>
+    <form method="get" class="form-grid">
+      <label>
+        Name or email
+        <input name="q" value="{{ filters.get('q','') }}">
+      </label>
+      <label>
+        Technology
+        <input name="technology" value="{{ filters.get('technology','') }}">
+      </label>
+      <label>
+        Status
+        <select name="status">
+          <option value="">
+            Any status
+          </option>
+          {% for s in ['ACTIVE','INACTIVE','PLACED'] %}
+          <option value="{{ s }}" {% if filters.get('status')==s %}selected{% endif %}>
+            {{ s }}
+          </option>
+          {% endfor %}
+        </select>
+      </label>
+      <button class="button secondary">
+        Search
+      </button>
+    </form>
+  </section>
+</div>
+<section class="panel">
+  <h2>
+    Candidate directory
+  </h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>
+            ID
+          </th>
+          <th>
+            Name
+          </th>
+          <th>
+            Email
+          </th>
+          <th>
+            Technology
+          </th>
+          <th>
+            Percentage
+          </th>
+          <th>
+            Passing year
+          </th>
+          <th>
+            Status
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in candidates %}
+        <tr>
+          <td>
+            {{ c[0] }}
+          </td>
+          <td>
+            {{ c[1] }}
+          </td>
+          <td>
+            {{ c[2] }}
+          </td>
+          <td>
+            {{ c[3] }}
+          </td>
+          <td>
+            {{ c[4] }}%
+          </td>
+          <td>
+            {{ c[5] }}
+          </td>
+          <td>
+            <span class="badge">
+              {{ c[6] }}
+            </span>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="7" class="empty">
+            No candidates found.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

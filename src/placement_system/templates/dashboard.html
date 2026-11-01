@@ -1,0 +1,158 @@
+{% extends "base.html" %}{% block title %}Dashboard · Placement Desk{% endblock %}{% block content %}
+<section class="hero">
+  <div>
+    <p class="eyebrow">
+      RECRUITMENT OPERATIONS
+    </p>
+    <h1>
+      Placement dashboard
+    </h1>
+    <p>
+      Track candidates, job openings, applications, interviews, and placements from one workspace.
+    </p>
+  </div>
+  <a class="button primary" href="{{ url_for('candidates_page') }}">
+    Register candidate
+  </a>
+</section>
+<section class="cards">
+  <a class="card" href="{{ url_for('candidates_page') }}">
+    <span class="card-label">
+      Manage
+    </span>
+    <strong>
+      Candidates
+    </strong>
+    <small>
+      Profiles, skills, and eligibility data
+    </small>
+  </a>
+  <a class="card" href="{{ url_for('jobs_page') }}">
+    <span class="card-label">
+      Manage
+    </span>
+    <strong>
+      Companies
+      &
+      jobs
+    </strong>
+    <small>
+      Employers and open requirements
+    </small>
+  </a>
+  <a class="card" href="{{ url_for('applications_page') }}">
+    <span class="card-label">
+      Workflow
+    </span>
+    <strong>
+      Applications
+    </strong>
+    <small>
+      Review and shortlist candidates
+    </small>
+  </a>
+  <a class="card" href="{{ url_for('interviews_page') }}">
+    <span class="card-label">
+      Workflow
+    </span>
+    <strong>
+      Interviews
+    </strong>
+    <small>
+      Schedule rounds and record feedback
+    </small>
+  </a>
+</section>
+<section class="panel">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">
+        PIPELINE
+      </p>
+      <h2>
+        Application status
+      </h2>
+    </div>
+    <a href="{{ url_for('reports_page') }}">
+      Open reports →
+    </a>
+  </div>
+  {% if statuses %}
+  <div class="status-grid">
+    {% for status, count in statuses %}
+    <div class="status-tile">
+      <span>
+        {{ status|title }}
+      </span>
+      <strong>
+        {{ count }}
+      </strong>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="muted">
+    No applications recorded yet.
+  </p>
+  {% endif %}
+</section>
+<section class="panel">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">
+        RECENT ACTIVITY
+      </p>
+      <h2>
+        Recent placements
+      </h2>
+    </div>
+    <a href="{{ url_for('placements_page') }}">
+      View placements →
+    </a>
+  </div>
+  {% if placements %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>
+            Candidate
+          </th>
+          <th>
+            Company
+          </th>
+          <th>
+            Role
+          </th>
+          <th>
+            Joined
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in placements %}
+        <tr>
+          <td>
+            {{ row[2] }}
+          </td>
+          <td>
+            {{ row[3] }}
+          </td>
+          <td>
+            {{ row[4] }}
+          </td>
+          <td>
+            {{ row[5] }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="muted">
+    No placements recorded yet.
+  </p>
+  {% endif %}
+</section>
+{% endblock %}

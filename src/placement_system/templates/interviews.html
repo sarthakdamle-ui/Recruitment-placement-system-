@@ -1,0 +1,174 @@
+{% extends "base.html" %}{% block title %}Interviews · Placement Desk{% endblock %}{% block content %}
+<div class="page-heading">
+  <div>
+    <p class="eyebrow">
+      INTERVIEW PROCESS
+    </p>
+    <h1>
+      Interviews
+    </h1>
+    <p>
+      Schedule rounds for shortlisted candidates and record interviewer feedback.
+    </p>
+  </div>
+</div>
+<div class="layout-two">
+  <section class="panel">
+    <h2>
+      Schedule interview
+    </h2>
+    <form method="post" class="form-grid">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="action" value="schedule">
+      <label>
+        Application ID
+        <select name="application_id" required>
+          {% for a in applications if a[5]=='SHORTLISTED' %}
+          <option value="{{ a[0] }}">
+            #{{ a[0] }} · {{ a[1] }} · {{ a[3] }}
+          </option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        Date and time
+        <input type="datetime-local" name="scheduled_at" required>
+      </label>
+      <label>
+        Mode
+        <select name="mode">
+          <option>
+            ONLINE
+          </option>
+          <option>
+            ONSITE
+          </option>
+          <option>
+            PHONE
+          </option>
+        </select>
+      </label>
+      <label>
+        Interviewer
+        <input name="interviewer">
+      </label>
+      <button class="button primary">
+        Schedule round
+      </button>
+    </form>
+  </section>
+  <section class="panel">
+    <h2>
+      Record feedback
+    </h2>
+    <form method="post" class="form-grid">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="action" value="feedback">
+      <label>
+        Interview
+        <select name="interview_id" required>
+          {% for i in interviews %}
+          <option value="{{ i[0] }}">
+            #{{ i[0] }} · Application {{ i[1] }} · Round {{ i[2] }}
+          </option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        Result
+        <select name="result">
+          <option>
+            PASS
+          </option>
+          <option>
+            FAIL
+          </option>
+        </select>
+      </label>
+      <label class="span-two">
+        Feedback
+        <textarea name="feedback" rows="3" required>
+        </textarea>
+      </label>
+      <button class="button secondary span-two">
+        Save feedback
+      </button>
+    </form>
+  </section>
+</div>
+<section class="panel">
+  <h2>
+    Interview rounds
+  </h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>
+            ID
+          </th>
+          <th>
+            Application
+          </th>
+          <th>
+            Round
+          </th>
+          <th>
+            Schedule
+          </th>
+          <th>
+            Mode
+          </th>
+          <th>
+            Interviewer
+          </th>
+          <th>
+            Result
+          </th>
+          <th>
+            Feedback
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in interviews %}
+        <tr>
+          <td>
+            {{ i[0] }}
+          </td>
+          <td>
+            {{ i[1] }}
+          </td>
+          <td>
+            {{ i[2] }}
+          </td>
+          <td>
+            {{ i[3] }}
+          </td>
+          <td>
+            {{ i[4] }}
+          </td>
+          <td>
+            {{ i[5] or '' }}
+          </td>
+          <td>
+            <span class="badge">
+              {{ i[6] }}
+            </span>
+          </td>
+          <td>
+            {{ i[7] or '' }}
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="8" class="empty">
+            No interviews scheduled.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
